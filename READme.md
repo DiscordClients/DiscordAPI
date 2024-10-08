@@ -1,6 +1,8 @@
 # Welcome to DiscordAPI
 
-This repository shows you how to use DiscordAPI
+This repository shows a example usage of DiscordAPI
+
+This is still on working progress and there is right now only dming function soon there will be more
 
 Installation:
 ```
