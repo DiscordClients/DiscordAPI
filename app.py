@@ -9,6 +9,7 @@ TOKEN = config['token']
 
 
 send_message_url = "https://discord.com/api/v9/channels/{channel_id}/messages"
+send_reaction_url = "https://discord.com/api/v9/channels/{channel_id}/messages/{message_id}/reactions/{reaction}/@me?location=Message%20Hover%20Bar&type=0"
 
 
 def get_dm_channels():
@@ -75,6 +76,20 @@ def send_dm(channel_id, message):
         print(f"Failed to send message: {response.status_code} - {response.text}")
 
 
+def send_reaction(channel_id, message_id, reaction):
+    headers = {
+        "Authorization": TOKEN,
+        "Content-Type": "application/json"
+    }
+
+    response = requests.put(send_reaction_url.format(channel_id=channel_id, message_id=message_id, reaction=reaction), headers=headers)
+    
+    if response.status_code == 204:
+        print("Reaction added successfully!")
+    else:
+        print(f"Failed to add reaction: {response.status_code} - {response.text}")
+
+
 if __name__ == "__main__":
     user_id = input("Enter the Discord ID of the user: ")
     
@@ -88,6 +103,13 @@ if __name__ == "__main__":
         print("No existing DM channel, creating one...")
         dm_channel = create_dm_channel(user_id)
     
-    if dm_channel:
+    option = input("Enter 1 to send a message, or 2 to add a reaction: ")
+
+    if dm_channel and option == "1":
         message = input("Enter the message to send: ")
         send_dm(dm_channel, message)
+
+    if dm_channel and option == "2":
+        message_id = input("Enter the message ID: ")
+        reaction = input("Enter the reaction to add: ")
+        send_reaction(dm_channel, message_id, reaction)
