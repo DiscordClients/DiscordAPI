@@ -18,5 +18,5 @@ pip install -r requirements.txt
 
 Now you can run the programm:
 ```
-python app.py
+python main.py
 ```
