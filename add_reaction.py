@@ -11,8 +11,8 @@ def add_reaction(client: DiscordClient, user_id: str):
 
     try:
         client.send_reaction(dm_channel, message_id, reaction)  
-        print(f"✅ Reaction '{reaction}' added to message {message_id} in DM with user {user_id}.")
+        print(f"Reaction '{reaction}' added to message {message_id} in DM with user {user_id}.")
     except Exception as e:
-        print(f"❌ Failed to add reaction: {e}")
+        print(f"Failed to add reaction: {e}")
 
     input("\nPress Enter to return to menu...")
