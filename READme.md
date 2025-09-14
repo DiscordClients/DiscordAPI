@@ -9,7 +9,6 @@ Installation:
 git clone https://github.com/DiscordClients/DiscordAPI.git
 ```
 
-then replace YOUR_TOKEN in config.json with you REAL TOKEN
 
 now install requirements by running:
 ```
