@@ -36,10 +36,15 @@ def get_token():
 
 def main_menu(client, config):
     user_id = config.get("user_id")
+    token = config.get("token")
+
     if not user_id:
         user_id = get_user_id()
         config["user_id"] = user_id
+        token = get_token()
+        config["token"] = token
         save_config(config)
+        client.token = token
 
     while True:
         clear_screen()
@@ -89,11 +94,16 @@ def main_menu(client, config):
 
 if __name__ == "__main__":
     config = load_config()
+
+    user_id = config.get("user_id")
     token = config.get("token")
-    if not token:
+
+    if not user_id:
+        user_id = get_user_id()
+        config["user_id"] = user_id
         token = get_token()
         config["token"] = token
         save_config(config)
 
-    client = DiscordClient(token)
+    client = DiscordClient(config["token"])
     main_menu(client, config)
