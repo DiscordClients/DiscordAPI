@@ -20,17 +20,24 @@ def save_config(config):
     with open("config.json", "w") as f:
         json.dump(config, f, indent=4)
 
-def get_valid_user_id():
+def get_user_id():
     while True:
         uid = input("Enter the Discord ID of the user: ").strip()
         if uid.isdigit():
             return uid
         print("Invalid ID. Discord IDs are numeric.")
 
+def get_token():
+    while True:
+        token = input("Enter your Discord token: ").strip()
+        if token:
+            return token
+        print("Token cannot be empty.")
+
 def main_menu(client, config):
     user_id = config.get("user_id")
     if not user_id:
-        user_id = get_valid_user_id()
+        user_id = get_user_id()
         config["user_id"] = user_id
         save_config(config)
 
@@ -57,22 +64,18 @@ def main_menu(client, config):
             elif option == "4":
                 message_logger(client, user_id)
             elif option == "5":
-                user_id = get_valid_user_id()
+                user_id = get_user_id()
                 config["user_id"] = user_id
                 save_config(config)
                 print("Discord ID updated!")
                 input("\nPress Enter to return to menu...")
             elif option == "6":
-                new_token = input("Enter new Discord token: ").strip()
-                if new_token:
-                    config["token"] = new_token
-                    save_config(config)
-                    print("Token updated successfully!")
-                    input("\nPress Enter to return to menu...")
-                    client = DiscordClient(new_token)
-                else:
-                    print("Invalid token.")
-                    input("\nPress Enter to return to menu...")
+                new_token = get_token()
+                config["token"] = new_token
+                save_config(config)
+                client = DiscordClient(new_token)
+                print("Token updated successfully!")
+                input("\nPress Enter to return to menu...")
             elif option == "7":
                 print("Goodbye!")
                 break
@@ -88,6 +91,9 @@ if __name__ == "__main__":
     config = load_config()
     token = config.get("token")
     if not token:
-        raise ValueError("Token not found in config.json!")
+        token = get_token()
+        config["token"] = token
+        save_config(config)
+
     client = DiscordClient(token)
     main_menu(client, config)
